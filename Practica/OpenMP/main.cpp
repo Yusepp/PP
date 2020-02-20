@@ -41,13 +41,13 @@ bool checkResults(uchar4* rgba, uchar3* brg, int size) {
 }
 
 void convertBRG2RGBA(uchar3* brg, uchar4* rgba, int width, int height) {
-    for (int x=0; x<width; ++x) {
-    	for (int y=0; y<height; ++y) {	
-	    rgba[width * y + x].x = brg[width * y + x].y;
-	    rgba[width * y + x].y = brg[width * y + x].z;
-	    rgba[width * y + x].z = brg[width * y + x].x;
-	    rgba[width * y + x].w = 255;
-	}
+    for (int y=0; y<height; ++y) {
+    	for (int x=0; x<width; ++x) {	
+            rgba[width * y + x].x = brg[width * y + x].y;
+            rgba[width * y + x].y = brg[width * y + x].z;
+            rgba[width * y + x].z = brg[width * y + x].x;
+            rgba[width * y + x].w = 255;
+	    }
     }
 }
 
