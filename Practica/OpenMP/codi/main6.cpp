@@ -10,10 +10,10 @@
 typedef unsigned char uchar;
 
 struct _uchar3 {
-    uchar x;
-    uchar y;
-    uchar z;
-};
+uchar x;
+uchar y;
+uchar z;
+} __attribute__ ((aligned (4)));
 
 using uchar3 = _uchar3;
 
@@ -41,6 +41,29 @@ bool checkResults(uchar4* rgba, uchar3* brg, int size) {
 }
 
 void convertBRG2RGBA(uchar3* brg, uchar4* rgba, int width, int height) {
+    for (int x=0; x<width; ++x) {
+    	for (int y=0; y<height; ++y) {	
+	    rgba[width * y + x].x = brg[width * y + x].y;
+	    rgba[width * y + x].y = brg[width * y + x].z;
+	    rgba[width * y + x].z = brg[width * y + x].x;
+	    rgba[width * y + x].w = 255;
+	}
+    }
+}
+
+void convertBRG2RGBA2(uchar3* brg, uchar4* rgba, int width, int height) {
+    for (int y=0; y<height; ++y) {
+    	for (int x=0; x<width; ++x) {	
+            rgba[width * y + x].x = brg[width * y + x].y;
+            rgba[width * y + x].y = brg[width * y + x].z;
+            rgba[width * y + x].z = brg[width * y + x].x;
+            rgba[width * y + x].w = 255;
+	    }
+    }
+}
+
+void convertBRG2RGBA3(uchar3* brg, uchar4* rgba, int width, int height) {
+    #pragma omp parallel for
     for (int y=0; y<height; ++y) {
     	for (int x=0; x<width; ++x) {	
             rgba[width * y + x].x = brg[width * y + x].y;
@@ -70,13 +93,14 @@ int main() {
     h_rgba = (uchar4*)malloc(sizeof(uchar4)*WIDTH*HEIGHT);
 
     auto t1 = std::chrono::high_resolution_clock::now();
+    #pragma omp parallel for
     for (int i=0; i<EXPERIMENT_ITERATIONS; ++i) {    
-	convertBRG2RGBA(h_brg, h_rgba, WIDTH, HEIGHT);
+	convertBRG2RGBA2(h_brg, h_rgba, WIDTH, HEIGHT);
     }
     auto t2 = std::chrono::high_resolution_clock::now();
 
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
-    std::cout << "convertBRG2RGBA time for " << EXPERIMENT_ITERATIONS \
+    std::cout << "convertBRG2RGBA2 time for " << EXPERIMENT_ITERATIONS \
     << " iterations = "<< duration << "us" << std::endl;
 
     bool ok = checkResults(h_rgba, h_brg, WIDTH*HEIGHT);
