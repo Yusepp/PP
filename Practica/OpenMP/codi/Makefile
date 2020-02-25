@@ -1,11 +1,20 @@
+# Because OpenMP doesnt work with Macos compiler Clang
+# I had to install the gnu compiler by using Homebrew package manager
+
+ifeq (, $(shell which g++-9))
+COMPILER := g++
+else
+COMPILER := g++-9
+endif
 
 all:
-	g++ main1.cpp -o main1 -fopenmp
-	g++ main2.cpp -o main2 -Ofast -fopenmp
-	g++ main3.cpp -o main3 -Ofast -fopenmp
-	g++ main4.cpp -o main4 -Ofast -fopenmp
-	g++ main5.cpp -o main5 -Ofast -fopenmp
-	g++ main6.cpp -o main6 -Ofast -fopenmp
-	g++ main7.cpp -o main7 -Ofast -fopenmp
+	@echo "Using this compiler: $(COMPILER)"
+	$(COMPILER) main_1.cpp -o main_1 -fopenmp
+	$(COMPILER) main_2.cpp -o main_2 -Ofast -fopenmp
+	$(COMPILER) main_3.cpp -o main_3 -Ofast -fopenmp
+	$(COMPILER) main_4.cpp -o main_4 -Ofast -fopenmp
+	$(COMPILER) main_5.cpp -o main_5 -Ofast -fopenmp
+	$(COMPILER) main_6.cpp -o main_6 -Ofast -fopenmp
+	$(COMPILER) main_7.cpp -o main_7 -Ofast -fopenmp
 clean:
-	rm main1 main2 main3 main4 main5 main6 main7
+	rm main_1 main_2 main_3 main_4 main_5 main_6 main_7
