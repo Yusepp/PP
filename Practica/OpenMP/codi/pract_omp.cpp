@@ -6,11 +6,13 @@
 
 using namespace std;
 
-// EXERCISES: 1, 2, 3
+// EXERCISES: 1, 2, 3 DEFINITIONS START
 bool checkResults(uchar4 *rgba, uchar3_na *brg, int size);
 void convertBRG2RGBA(uchar3_na *brg, uchar4 *rgba, int width, int height);
 void convertBRG2RGBA2(uchar3_na *brg, uchar4 *rgba, int width, int height);
+// EXERCISES: 1, 2, 3 DEFINITIONS END
 
+// EXERCISES: 1, 2, 3
 bool checkResults(uchar4* rgba, uchar3_na* brg, int size) {
 
     bool correct = true;
@@ -25,6 +27,7 @@ bool checkResults(uchar4* rgba, uchar3_na* brg, int size) {
     return correct;
 }
 
+// EXERCISES: 1, 2
 void convertBRG2RGBA(uchar3_na* brg, uchar4* rgba, int width, int height) {
     for (int x=0; x<width; ++x) {
     	for (int y=0; y<height; ++y) {	
@@ -36,6 +39,7 @@ void convertBRG2RGBA(uchar3_na* brg, uchar4* rgba, int width, int height) {
     }
 }
 
+// EXERCISE 3
 void convertBRG2RGBA2(uchar3_na* brg, uchar4* rgba, int width, int height) {
     for (int y=0; y<height; ++y) {
     	for (int x=0; x<width; ++x) {	
@@ -47,11 +51,13 @@ void convertBRG2RGBA2(uchar3_na* brg, uchar4* rgba, int width, int height) {
     }
 }
 
-// EXERCISES: 4, 5, 6, 7
+// EXERCISES: 4, 5, 6, 7 DEFINITIONS START
 bool checkResults(uchar4 *rgba, uchar3 *brg, int size);
 void convertBRG2RGBA2(uchar3 *brg, uchar4 *rgba, int width, int height);
 void convertBRG2RGBA3(uchar3 *brg, uchar4 *rgba, int width, int height);
+// EXERCISES: 4, 5, 6, 7 DEFINITIONS END
 
+// EXERCISES: 4, 5, 6, 7
 bool checkResults(uchar4 *rgba, uchar3 *brg, int size)
 {
     bool correct = true;
@@ -67,6 +73,7 @@ bool checkResults(uchar4 *rgba, uchar3 *brg, int size)
     return correct;
 }
 
+// EXERCISES: 4, 6, 7
 void convertBRG2RGBA2(uchar3 *brg, uchar4 *rgba, int width, int height)
 {
     for (int y = 0; y < height; ++y)
@@ -81,6 +88,7 @@ void convertBRG2RGBA2(uchar3 *brg, uchar4 *rgba, int width, int height)
     }
 }
 
+// EXERCISE: 5
 void convertBRG2RGBA3(uchar3 *brg, uchar4 *rgba, int width, int height)
 {
 #pragma omp parallel for
