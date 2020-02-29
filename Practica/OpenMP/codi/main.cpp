@@ -14,7 +14,7 @@ bool is_num(string str) {
         int  i = stoi(str);
         //if (i == 0) no need to check!
         return true;
-     } catch(std::exception const & e) {
+     } catch(exception const & e) {
          return false;
      }
 }
