@@ -9,6 +9,6 @@ endif
 
 all:
 	@echo "Using this compiler: $(COMPILER)"
-	$(COMPILER) main.cpp pract_omp.cpp -o main -fopenmp
+	$(COMPILER) main.cpp pract_omp.cpp -o main -fopenmp -Ofast
 clean:
 	rm main

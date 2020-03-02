@@ -151,17 +151,17 @@ void exercise_omp(int e) {
         }
         break;
         case EXERCISE_3:
-        for (int i=0; i<EXPERIMENT_ITERATIONS; ++i) { 
+        for (int i=0; i<EXPERIMENT_ITERATIONS_2; ++i) { 
             convertBRG2RGBA2(h_brg_na, h_rgba, WIDTH, HEIGHT);
         }
         break;
         case EXERCISE_4:
-        for (int i=0; i<EXPERIMENT_ITERATIONS; ++i) { 
+        for (int i=0; i<EXPERIMENT_ITERATIONS_2; ++i) { 
             convertBRG2RGBA2(h_brg, h_rgba, WIDTH, HEIGHT);
         }
         break;
         case EXERCISE_5:
-        for (int i=0; i<EXPERIMENT_ITERATIONS; ++i) { 
+        for (int i=0; i<EXPERIMENT_ITERATIONS_2; ++i) { 
             convertBRG2RGBA3(h_brg, h_rgba, WIDTH, HEIGHT);
         }
         break;
@@ -169,7 +169,7 @@ void exercise_omp(int e) {
         #pragma omp parallel
         {
             #pragma omp for
-            for (int i = 0; i < EXPERIMENT_ITERATIONS; ++i)
+            for (int i = 0; i < EXPERIMENT_ITERATIONS_2; ++i)
             {
                 convertBRG2RGBA2(h_brg, h_rgba, WIDTH, HEIGHT);
             }
@@ -183,7 +183,7 @@ void exercise_omp(int e) {
             cout << "Thread ID: " << omp_get_thread_num() << endl;
             }
             #pragma omp for
-            for (int i = 0; i < EXPERIMENT_ITERATIONS; ++i)
+            for (int i = 0; i < EXPERIMENT_ITERATIONS_2; ++i)
             {
                 convertBRG2RGBA2(h_brg, h_rgba, WIDTH, HEIGHT);
             }
