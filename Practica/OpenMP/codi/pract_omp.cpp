@@ -13,11 +13,13 @@ void convertBRG2RGBA2(uchar3_na *brg, uchar4 *rgba, int width, int height);
 // EXERCISES: 1, 2, 3 DEFINITIONS END
 
 // EXERCISES: 1, 2, 3
-bool checkResults(uchar4* rgba, uchar3_na* brg, int size) {
+bool checkResults(uchar4 *rgba, uchar3_na *brg, int size)
+{
 
     bool correct = true;
 
-    for (int i=0; i < size; ++i) {
+    for (int i = 0; i < size; ++i)
+    {
         correct &= rgba[i].x == brg[i].y;
         correct &= rgba[i].y == brg[i].z;
         correct &= rgba[i].z == brg[i].x;
@@ -28,26 +30,32 @@ bool checkResults(uchar4* rgba, uchar3_na* brg, int size) {
 }
 
 // EXERCISES: 1, 2
-void convertBRG2RGBA(uchar3_na* brg, uchar4* rgba, int width, int height) {
-    for (int x=0; x<width; ++x) {
-    	for (int y=0; y<height; ++y) {	
-	    rgba[width * y + x].x = brg[width * y + x].y;
-	    rgba[width * y + x].y = brg[width * y + x].z;
-	    rgba[width * y + x].z = brg[width * y + x].x;
-	    rgba[width * y + x].w = 255;
-	}
-    }
-}
-
-// EXERCISE 3
-void convertBRG2RGBA2(uchar3_na* brg, uchar4* rgba, int width, int height) {
-    for (int y=0; y<height; ++y) {
-    	for (int x=0; x<width; ++x) {	
+void convertBRG2RGBA(uchar3_na *brg, uchar4 *rgba, int width, int height)
+{
+    for (int x = 0; x < width; ++x)
+    {
+        for (int y = 0; y < height; ++y)
+        {
             rgba[width * y + x].x = brg[width * y + x].y;
             rgba[width * y + x].y = brg[width * y + x].z;
             rgba[width * y + x].z = brg[width * y + x].x;
             rgba[width * y + x].w = 255;
-	    }
+        }
+    }
+}
+
+// EXERCISE 3
+void convertBRG2RGBA2(uchar3_na *brg, uchar4 *rgba, int width, int height)
+{
+    for (int y = 0; y < height; ++y)
+    {
+        for (int x = 0; x < width; ++x)
+        {
+            rgba[width * y + x].x = brg[width * y + x].y;
+            rgba[width * y + x].y = brg[width * y + x].z;
+            rgba[width * y + x].z = brg[width * y + x].x;
+            rgba[width * y + x].w = 255;
+        }
     }
 }
 
@@ -91,7 +99,7 @@ void convertBRG2RGBA2(uchar3 *brg, uchar4 *rgba, int width, int height)
 // EXERCISE: 5
 void convertBRG2RGBA3(uchar3 *brg, uchar4 *rgba, int width, int height)
 {
-#pragma omp parallel for
+#pragma omp parallel for schedule(guided, 1000) collapse(2)
     for (int y = 0; y < height; ++y)
     {
         for (int x = 0; x < width; ++x)
@@ -104,126 +112,153 @@ void convertBRG2RGBA3(uchar3 *brg, uchar4 *rgba, int width, int height)
     }
 }
 
-void exercise_omp(int e) {
+void exercise_omp(int e)
+{
     bool na = e == 1 || e == 3; // NOT ALIGNED
 
     uchar3_na *h_brg_na;
     uchar3 *h_brg;
     uchar4 *h_rgba;
 
-    int bar_widht = HEIGHT/3;
+    int bar_widht = HEIGHT / 3;
 
     // Alloc and generate BRG bars.
-    if (na) {
-        h_brg_na = (uchar3_na*)malloc(sizeof(uchar3_na)*WIDTH*HEIGHT);
-        for (int i=0; i < WIDTH * HEIGHT; ++i) {
-            if (i < bar_widht) {
-                h_brg_na[i] = { 255, 0, 0 };
-            } else if (i < bar_widht*2) {
-                h_brg_na[i] = { 0, 255, 0 };
-            } else {
-                    h_brg_na[i] = { 0, 0, 255 };
+    if (na)
+    {
+        h_brg_na = (uchar3_na *)malloc(sizeof(uchar3_na) * WIDTH * HEIGHT);
+        for (int i = 0; i < WIDTH * HEIGHT; ++i)
+        {
+            if (i < bar_widht)
+            {
+                h_brg_na[i] = {255, 0, 0};
+            }
+            else if (i < bar_widht * 2)
+            {
+                h_brg_na[i] = {0, 255, 0};
+            }
+            else
+            {
+                h_brg_na[i] = {0, 0, 255};
             }
         }
-    } else {
-        h_brg = (uchar3*)malloc(sizeof(uchar3)*WIDTH*HEIGHT);
-        for (int i=0; i < WIDTH * HEIGHT; ++i) {
-            if (i < bar_widht) {
-                h_brg[i] = { 255, 0, 0 };
-            } else if (i < bar_widht*2) {
-                h_brg[i] = { 0, 255, 0 };
-            } else {
-                    h_brg[i] = { 0, 0, 255 };
+    }
+    else
+    {
+        h_brg = (uchar3 *)malloc(sizeof(uchar3) * WIDTH * HEIGHT);
+        for (int i = 0; i < WIDTH * HEIGHT; ++i)
+        {
+            if (i < bar_widht)
+            {
+                h_brg[i] = {255, 0, 0};
+            }
+            else if (i < bar_widht * 2)
+            {
+                h_brg[i] = {0, 255, 0};
+            }
+            else
+            {
+                h_brg[i] = {0, 0, 255};
             }
         }
     }
 
     // Alloc RGBA pointers
-    h_rgba = (uchar4*)malloc(sizeof(uchar4)*WIDTH*HEIGHT);
+    h_rgba = (uchar4 *)malloc(sizeof(uchar4) * WIDTH * HEIGHT);
 
     auto t1 = chrono::high_resolution_clock::now();
 
-    switch(e) {
-        case EXERCISE_1:
-        case EXERCISE_2:
-        for (int i=0; i<EXPERIMENT_ITERATIONS; ++i) {    
+    switch (e)
+    {
+    case EXERCISE_1:
+    case EXERCISE_2:
+        for (int i = 0; i < EXPERIMENT_ITERATIONS; ++i)
+        {
             convertBRG2RGBA(h_brg_na, h_rgba, WIDTH, HEIGHT);
         }
         break;
-        case EXERCISE_3:
-        for (int i=0; i<EXPERIMENT_ITERATIONS_2; ++i) { 
+    case EXERCISE_3:
+        for (int i = 0; i < EXPERIMENT_ITERATIONS_2; ++i)
+        {
             convertBRG2RGBA2(h_brg_na, h_rgba, WIDTH, HEIGHT);
         }
         break;
-        case EXERCISE_4:
-        for (int i=0; i<EXPERIMENT_ITERATIONS_2; ++i) { 
+    case EXERCISE_4:
+        for (int i = 0; i < EXPERIMENT_ITERATIONS_2; ++i)
+        {
             convertBRG2RGBA2(h_brg, h_rgba, WIDTH, HEIGHT);
         }
         break;
-        case EXERCISE_5:
-        for (int i=0; i<EXPERIMENT_ITERATIONS_2; ++i) { 
+    case EXERCISE_5:
+        for (int i = 0; i < EXPERIMENT_ITERATIONS_2; ++i)
+        {
             convertBRG2RGBA3(h_brg, h_rgba, WIDTH, HEIGHT);
         }
         break;
-        case EXERCISE_6:
-        #pragma omp parallel
+    case EXERCISE_6:
+#pragma omp parallel
+    {
+#pragma omp for
+        for (int i = 0; i < EXPERIMENT_ITERATIONS_2; ++i)
         {
-            #pragma omp for
-            for (int i = 0; i < EXPERIMENT_ITERATIONS_2; ++i)
-            {
-                convertBRG2RGBA2(h_brg, h_rgba, WIDTH, HEIGHT);
-            }
+            convertBRG2RGBA2(h_brg, h_rgba, WIDTH, HEIGHT);
         }
-        break;
-        case EXERCISE_7:
-        #pragma omp parallel
+    }
+    break;
+    case EXERCISE_7:
+#pragma omp parallel
+    {
+#pragma omp critical
         {
-            #pragma omp critical
-            {
             cout << "Thread ID: " << omp_get_thread_num() << endl;
-            }
-            #pragma omp for
-            for (int i = 0; i < EXPERIMENT_ITERATIONS_2; ++i)
-            {
-                convertBRG2RGBA2(h_brg, h_rgba, WIDTH, HEIGHT);
-            }
         }
-        break;
+#pragma omp for
+        for (int i = 0; i < EXPERIMENT_ITERATIONS_2; ++i)
+        {
+            convertBRG2RGBA2(h_brg, h_rgba, WIDTH, HEIGHT);
+        }
+    }
+    break;
     }
 
     auto t2 = chrono::high_resolution_clock::now();
 
-    auto duration = chrono::duration_cast<chrono::microseconds>( t2 - t1 ).count();
+    auto duration = chrono::duration_cast<chrono::microseconds>(t2 - t1).count();
 
-    switch(e) {
-        case EXERCISE_1:
-        case EXERCISE_2:
+    switch (e)
+    {
+    case EXERCISE_1:
+    case EXERCISE_2:
         cout << "convertBRG2RGBA time for ";
         break;
-        case EXERCISE_3:
-        case EXERCISE_4:
-        case EXERCISE_6:
-        case EXERCISE_7:
-        cout << "convertBRG2RGBA2 time for ";
+    case EXERCISE_3:
+    case EXERCISE_4:
+    case EXERCISE_6:
+    case EXERCISE_7:
+        cout << "convertBRG2RGBA2 time for " << EXPERIMENT_ITERATIONS_2;
         break;
-        case EXERCISE_5:
-        cout << "convertBRG2RGBA3 time for ";
+    case EXERCISE_5:
+        cout << "convertBRG2RGBA3 time for " << EXPERIMENT_ITERATIONS_2;
         break;
     }
 
-    cout << EXPERIMENT_ITERATIONS \
-    << " iterations = "<< duration << "us" << endl;
+    cout << " iterations;" << duration << ";us;";
 
     bool ok;
-    if (na) {
-        ok = checkResults(h_rgba, h_brg_na, WIDTH*HEIGHT);
-    } else {
-        ok = checkResults(h_rgba, h_brg, WIDTH*HEIGHT);
+    if (na)
+    {
+        ok = checkResults(h_rgba, h_brg_na, WIDTH * HEIGHT);
+    }
+    else
+    {
+        ok = checkResults(h_rgba, h_brg, WIDTH * HEIGHT);
     }
 
-    if (ok) {
+    if (ok)
+    {
         cout << "Executed!! Results OK." << endl;
-    } else {
+    }
+    else
+    {
         cout << "Executed!! Results NOT OK." << endl;
     }
 }
