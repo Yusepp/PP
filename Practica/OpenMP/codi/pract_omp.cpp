@@ -99,7 +99,7 @@ void convertBRG2RGBA2(uchar3 *brg, uchar4 *rgba, int width, int height)
 // EXERCISE: 5
 void convertBRG2RGBA3(uchar3 *brg, uchar4 *rgba, int width, int height)
 {
-#pragma omp parallel for schedule(guided, 1000) collampse(2)
+#pragma omp parallel for
     for (int y = 0; y < height; ++y)
     {
         for (int x = 0; x < width; ++x)
@@ -195,15 +195,12 @@ void exercise_omp(int e)
         }
         break;
     case EXERCISE_6:
-#pragma omp parallel
-    {
-#pragma omp for
+#pragma omp parallel for
         for (int i = 0; i < EXPERIMENT_ITERATIONS_2; ++i)
         {
             convertBRG2RGBA2(h_brg, h_rgba, WIDTH, HEIGHT);
         }
-    }
-    break;
+        break;
     case EXERCISE_7:
 #pragma omp parallel
     {
